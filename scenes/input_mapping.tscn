@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dwyh8eq53k5ty"]
+
+[ext_resource type="Script" uid="uid://ujpywme7gely" path="res://scripts/input_list.gd" id="1_lyi3w"]
+
+[node name="Control" type="Control" unique_id=297121473]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InputListHBox" type="VBoxContainer" parent="." unique_id=1328524944]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_lyi3w")
+input_list = Array[String](["move_up", "move_left", "move_down", "move_right", "jump", "confirm", "back", "select"])

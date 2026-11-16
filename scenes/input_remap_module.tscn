@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://j6n6npb4tq0"]
+
+[ext_resource type="Script" uid="uid://36hl1bw6tkry" path="res://scripts/input_remap_module.gd" id="1_bsyuo"]
+
+[node name="InputRemapModule" type="HBoxContainer" unique_id=1632560497]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_bsyuo")
+
+[node name="Label" type="Label" parent="." unique_id=1056474608]
+layout_mode = 2
+text = "Action Name"
+
+[node name="Button" type="Button" parent="." unique_id=902249076]
+layout_mode = 2
+text = "Input"
