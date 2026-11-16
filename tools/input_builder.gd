@@ -32,7 +32,9 @@ func save_map(new_inputs: Dictionary[String, InputEvent]) -> void:
 		dir.make_dir(Saveload.INPUT_EVENT_LOCATION)
 	
 	for key in keys:
-		ResourceSaver.save(new_inputs[key], (Saveload.INPUT_EVENT_LOCATION + key + ".res"))
+		var curr_resource : Resource = new_inputs[key]
+		if curr_resource != null:
+			ResourceSaver.save(new_inputs[key], (Saveload.INPUT_EVENT_LOCATION + key + ".res"))
 	file.store_var(keys)
 	file.close()
 	if FileAccess.file_exists(Saveload.REBIND_LOCATION):
