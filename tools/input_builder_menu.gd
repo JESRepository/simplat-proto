@@ -9,7 +9,6 @@ signal discard_input_map
 
 @onready var add_input_button: Button = $VBoxContainer/AddInputButton
 @onready var save_button: Button = $VBoxContainer/HBoxContainer/SaveButton
-@onready var discard_button: Button = $VBoxContainer/HBoxContainer/DiscardButton
 
 var inputs : Array[HBoxContainer]
 var events : Array[InputEvent]
@@ -18,10 +17,6 @@ var active_bind : Button
 func _ready() -> void:
 	if not add_input_button.pressed.is_connected(_on_add_input_pressed):
 		add_input_button.pressed.connect(_on_add_input_pressed)
-	if not save_button.pressed.is_connected(_on_save_pressed):
-		save_button.pressed.connect(_on_save_pressed)
-	if not discard_button.pressed.is_connected(_on_discard_pressed):
-		discard_button.pressed.connect(_on_discard_pressed)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -29,6 +24,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		events.set(inputs.find(active_bind.get_parent()), event)
 		active_bind.text = event.as_text()
 		active_bind = null
+		save()
 
 
 func _on_add_input_pressed() -> HBoxContainer:
@@ -60,7 +56,7 @@ func _on_add_input_pressed() -> HBoxContainer:
 
 
 func _on_input_name_changed(calling_object: TextEdit) -> void:
-	pass
+	save()
 
 
 func _on_bind_button_pressed(calling_object: Object) -> void:
@@ -74,15 +70,19 @@ func _on_remove_input_pressed(calling_object: Button) -> void:
 		var index = inputs.find(hbox) 
 		inputs.erase(hbox)
 		events.remove_at(index)
-	hbox.queue_free()
-
-
-func reload() -> void:
-	for x in inputs:
-		x.queue_free()
-	inputs.clear()
-	events.clear()
-	active_bind = null
+		
+		var dir = DirAccess.open("user://")
+		if dir.change_dir(Saveload.INPUT_EVENT_FOLDER) != Error.OK:
+			dir.make_dir(Saveload.INPUT_EVENT_LOCATION)
+		
+		var input = hbox.get_child(0).text
+		hbox.queue_free()
+		
+		if input == "":
+			return
+		if ResourceLoader.exists(Saveload.INPUT_EVENT_LOCATION + input + ".res"):
+			dir.remove(Saveload.INPUT_EVENT_LOCATION + input + ".res")
+	save()
 
 
 func set_custom_inputs(custom_inputs: Dictionary[String, InputEvent]) -> void:
@@ -96,13 +96,13 @@ func set_custom_inputs(custom_inputs: Dictionary[String, InputEvent]) -> void:
 		button.text = custom_inputs[input].as_text()
 
 
-func _on_save_pressed() -> void:
+func save() -> void:
 	var custom_inputs : Dictionary[String, InputEvent]
 	for hbox in inputs:
-		custom_inputs.set(hbox.get_child(0).text, events.get(inputs.find(hbox)))
+		var input = hbox.get_child(0).text
+		if input == "":
+			print("ERROR: cannot save an unnamed input")
+			return
+		custom_inputs.set(input, events.get(inputs.find(hbox)))
 	#print("custom inputs are: " + str(custom_inputs))
 	save_input_map.emit(custom_inputs)
-
-
-func _on_discard_pressed() -> void:
-	reload()

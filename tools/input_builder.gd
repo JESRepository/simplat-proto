@@ -29,7 +29,7 @@ func save_map(new_inputs: Dictionary[String, InputEvent]) -> void:
 	
 	var dir = DirAccess.open("user://")
 	if dir.change_dir(Saveload.INPUT_EVENT_FOLDER) != Error.OK:
-		dir.make_dir("user://" + Saveload.INPUT_EVENT_FOLDER)
+		dir.make_dir(Saveload.INPUT_EVENT_LOCATION)
 	
 	for key in keys:
 		ResourceSaver.save(new_inputs[key], (Saveload.INPUT_EVENT_LOCATION + key + ".res"))
