@@ -26,9 +26,11 @@ func save_map(new_inputs: Dictionary[String, InputEvent]) -> void:
 	var file = FileAccess.open(Saveload.REBIND_LOCATION, FileAccess.WRITE)
 	#file.store_var(custom_inputs.duplicate_deep())
 	var keys = new_inputs.keys()
-	#if DirAccess.open(Saveload.INPUT_EVENT_LOCATION) == null:
-		#var dir = DirAccess.open(Saveload.SAVE_LOCATION)
-		#dir.make_dir(Saveload.INPUT_EVENT_DIR)
+	
+	var dir = DirAccess.open("user://")
+	if dir.change_dir(Saveload.INPUT_EVENT_FOLDER) != Error.OK:
+		dir.make_dir("user://" + Saveload.INPUT_EVENT_FOLDER)
+	
 	for key in keys:
 		ResourceSaver.save(new_inputs[key], (Saveload.INPUT_EVENT_LOCATION + key + ".res"))
 	file.store_var(keys)

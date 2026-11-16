@@ -12,7 +12,7 @@ const CONTROLLER_BUTTON_LABELS = {
 	JoyButton.JOY_BUTTON_Y: "Action Button Left",
 	JoyButton.JOY_BUTTON_DPAD_UP : "DPad Up",
 	JoyButton.JOY_BUTTON_DPAD_LEFT : "DPad Left",
-	JoyButton.JOY_BUTTON_DPAD_DOWN : "Dpad Down",
+	JoyButton.JOY_BUTTON_DPAD_DOWN : "DPad Down",
 	JoyButton.JOY_BUTTON_LEFT_SHOULDER : "LB",
 	JoyButton.JOY_BUTTON_RIGHT_SHOULDER : "RB",
 	JoyButton.JOY_BUTTON_LEFT_STICK : "L3",

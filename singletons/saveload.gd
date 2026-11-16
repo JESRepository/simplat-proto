@@ -3,8 +3,8 @@ extends Node
 
 const SAVE_LOCATION = "user://SaveFile.json"
 const REBIND_LOCATION = "user://custom_inputs.json"
-const INPUT_EVENT_LOCATION = "user://"
-const INPUT_EVENT_DIR = ""
+const INPUT_EVENT_LOCATION = "user://input_events/"
+const INPUT_EVENT_FOLDER = "input_events"
 
 var save_data: Dictionary = {
 	
