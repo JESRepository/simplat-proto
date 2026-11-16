@@ -2,7 +2,7 @@ class_name InputList extends VBoxContainer
 
 @onready var input_remap_module = preload("res://scenes/input_remap_module.tscn")
 
-@export var input_list : Array[String]
+var input_list : Array[String]
 
 var input_remap_list : Array[InputRemapModule]
 var controller : String
@@ -20,9 +20,23 @@ func set_controller() -> void:
 
 
 func generate_input_remap_list() -> void:
+	var data : Array[String]
+	if FileAccess.file_exists(Saveload.REBIND_LOCATION):
+		var file = FileAccess.open(Saveload.REBIND_LOCATION, FileAccess.READ)
+		data = file.get_var()
+		file.close()
+		if not data is Array[String]:
+			return
+		# creates a list of input names
+		input_list = data
+	
 	for input in input_list:
-		if InputMap.has_action(input):
-			initialize_input_remap_module(input)
+		var event = ResourceLoader.load(Saveload.INPUT_EVENT_LOCATION + input + ".res")
+		if not InputMap.has_action(input):
+			InputMap.add_action(input)
+		if not InputMap.action_has_event(input, event):
+			InputMap.action_add_event(input, event)
+		initialize_input_remap_module(input)
 
 
 func initialize_input_remap_module(input) -> void:

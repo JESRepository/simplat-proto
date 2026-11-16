@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bwckhy73domr2"]
+
+[ext_resource type="Script" uid="uid://iscq6w3w74gc" path="res://tools/input_builder_menu.gd" id="1_ufkll"]
+
+[node name="InputBuilderMenu" type="Control" unique_id=1192286297]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ufkll")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=984785769]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="InputsVBox" type="VBoxContainer" parent="VBoxContainer" unique_id=2071327961]
+layout_mode = 2
+
+[node name="AddInputButton" type="Button" parent="VBoxContainer" unique_id=822991566]
+layout_mode = 2
+text = "+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=106628548]
+layout_mode = 2
+theme_override_constants/separation = 49
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=457357279]
+layout_mode = 2
+text = "Save"
+
+[node name="DiscardButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1552043860]
+layout_mode = 2
+text = "Discard"

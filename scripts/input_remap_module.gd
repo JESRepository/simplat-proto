@@ -52,6 +52,8 @@ func set_input(event: InputEvent) -> void:
 
 
 func set_input_display(new_input_name: String) -> void:
+	if not InputMap.has_action(new_input_name):
+		return
 	input_name = new_input_name
 	input_label.text = input_name
 	var input_button = InputMap.action_get_events(input_name)[0]

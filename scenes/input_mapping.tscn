@@ -24,4 +24,3 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 script = ExtResource("1_lyi3w")
-input_list = Array[String](["move_up", "move_left", "move_down", "move_right", "jump", "confirm", "back", "start"])
