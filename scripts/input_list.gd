@@ -22,7 +22,19 @@ func set_controller() -> void:
 func generate_input_remap_list() -> void:
 	for input in input_list:
 		if InputMap.has_action(input):
-			var new_input_remap : InputRemapModule = input_remap_module.instantiate()
-			input_remap_list.append(new_input_remap)
-			add_child(new_input_remap)
-			new_input_remap.set_input(input)
+			initialize_input_remap_module(input)
+
+
+func initialize_input_remap_module(input) -> void:
+	var new_input_remap : InputRemapModule = input_remap_module.instantiate()
+	input_remap_list.append(new_input_remap)
+	add_child(new_input_remap)
+	new_input_remap.set_input_display(input)
+	if not new_input_remap.remapper_active.is_connected(_on_remapper_active):
+		new_input_remap.remapper_active.connect(_on_remapper_active)
+
+
+func _on_remapper_active(active_node: InputRemapModule) -> void:
+	for remapper in input_remap_list:
+		if not remapper == active_node:
+			remapper.active = false

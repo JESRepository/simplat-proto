@@ -1,5 +1,10 @@
 class_name InputRemapModule extends HBoxContainer
 
+signal remapper_active
+
+var active: bool = false
+var input_name: String
+
 const CONTROLLER_BUTTON_LABELS = {
 	JoyButton.JOY_BUTTON_A: "Action Button Down",
 	JoyButton.JOY_BUTTON_B: "Action Button Right",
@@ -13,7 +18,7 @@ const CONTROLLER_BUTTON_LABELS = {
 	JoyButton.JOY_BUTTON_LEFT_STICK : "L3",
 	JoyButton.JOY_BUTTON_RIGHT_STICK : "R3",
 	JoyButton.JOY_BUTTON_START : "Start",
-	JoyButton.JOY_BUTTON_GUIDE : "Select",
+	JoyButton.JOY_BUTTON_BACK : "Select",
 }
 
 const CONTROLLER_AXIS_LABELS = {
@@ -26,23 +31,49 @@ const CONTROLLER_AXIS_LABELS = {
 }
 
 @onready var input_label : Label = $Label
-@onready var input_rebind_button : Button = $Button
+@onready var rebind_button : Button = $Button
+
+func _ready() -> void:
+	if not rebind_button.pressed.is_connected(_on_rebind_pressed):
+		rebind_button.pressed.connect(_on_rebind_pressed)
 
 
-func set_input(input_name: String) -> void:
+func _unhandled_input(event: InputEvent) -> void:
+	if not active:
+		return
+	set_input(event)
+	set_input_display(input_name)
+	active = false
+
+
+func set_input(event: InputEvent) -> void:
+	InputMap.action_erase_events(input_name)
+	InputMap.action_add_event(input_name, event)
+
+
+func set_input_display(new_input_name: String) -> void:
+	input_name = new_input_name
 	input_label.text = input_name
 	var input_button = InputMap.action_get_events(input_name)[0]
-	input_rebind_button.text = get_input_name(input_button)
+	rebind_button.text = get_input_name(input_button)
 
 
 func get_input_name(input: InputEvent) -> String:
 	var new_name = ""
-	print(input)
 	if input is InputEventJoypadButton:
 		if CONTROLLER_BUTTON_LABELS.has(input.button_index):
 			new_name = CONTROLLER_BUTTON_LABELS.get(input.button_index)
-	if input is InputEventJoypadMotion:
+	elif input is InputEventJoypadMotion:
 		if CONTROLLER_AXIS_LABELS.has(input.axis):
 			new_name = CONTROLLER_AXIS_LABELS.get(input.axis)
-	
+	else:
+		new_name = input.as_text()
+	if new_name == "":
+		new_name = input.as_text()
 	return new_name
+
+
+func _on_rebind_pressed() -> void:
+	remapper_active.emit(self)
+	active = true
+	rebind_button.text = "..."

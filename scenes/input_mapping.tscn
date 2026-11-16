@@ -11,8 +11,17 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="InputListHBox" type="VBoxContainer" parent="." unique_id=1328524944]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_right = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 script = ExtResource("1_lyi3w")
-input_list = Array[String](["move_up", "move_left", "move_down", "move_right", "jump", "confirm", "back", "select"])
+input_list = Array[String](["move_up", "move_left", "move_down", "move_right", "jump", "confirm", "back", "start"])
